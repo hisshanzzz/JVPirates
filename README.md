@@ -1,9 +1,13 @@
+### <img align="center" width="100%", height="100%" alt="Hello" src="graphics/backgrounds/Game_Intro.jpg" />
+
+
 # JVPirates
 
 ## 1.download the updated repo 
 
-## 2.run the `code.py` and test 
+## 2.run the `main.py` in code folder to test the game
 
+// 
 ## To-Do List
 
 - [x] Design- Creating assets
@@ -25,3 +29,4 @@
 - [ ] captian fix on the line
 - [ ] animation times
 - [ ] health bug (not working dead action when health 0)
+//
