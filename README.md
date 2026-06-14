@@ -20,23 +20,36 @@ Our team **Typhoons** created this as our first dive into 2D game development â€
 
 Mohamed Jaufer Mohamed Hisshan, Shenali Madurapperuma, Sahan Jayamal, Thiyagarajah Madusheshan, Pasan Wanigasuriya
 
-## Run locally
+## Run locally (Windows)
 
-1. Clone this repo
-2. Install **Python 3.12** and dependencies:
+**Requirements:** [Python 3.12](https://www.python.org/downloads/) (recommended). Python 3.14 may fail to install or run Pygame; use 3.12 if you hit errors.
 
-```bash
-py -3.12 -m pip install pygame pytmx
+1. **Clone the repo**
+
+```powershell
+git clone https://github.com/hisshanzzz/JVPirates.git
+cd JVPirates
 ```
 
-3. Run from the **project root** (not inside `code/`):
+2. **Install dependencies**
 
-```bash
-cd jv-pirates-temp
+```powershell
+py -3.12 -m pip install -r requirements.txt
+```
+
+3. **Run the game** from the **project root** (not inside `code/`)
+
+```powershell
 py -3.12 code/main.py
 ```
 
-Controls: arrow keys to move, Space to attack, P to pause.
+## Controls
+
+| Key | Action |
+|---|---|
+| Arrow keys | Move |
+| Space | Attack |
+| P | Pause |
 
 ## What we learned
 
