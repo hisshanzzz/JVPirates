@@ -23,13 +23,20 @@ Mohamed Jaufer Mohamed Hisshan, Shenali Madurapperuma, Sahan Jayamal, Thiyagaraj
 ## Run locally
 
 1. Clone this repo
-2. Install Python 3 and Pygame (`pip install pygame pytmx`)
-3. Run from the `code` folder:
+2. Install **Python 3.12** and dependencies:
 
 ```bash
-cd code
-python main.py
+py -3.12 -m pip install pygame pytmx
 ```
+
+3. Run from the **project root** (not inside `code/`):
+
+```bash
+cd jv-pirates-temp
+py -3.12 code/main.py
+```
+
+Controls: arrow keys to move, Space to attack, P to pause.
 
 ## What we learned
 

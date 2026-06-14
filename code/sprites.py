@@ -6,7 +6,7 @@ class Sprite(pygame.sprite.Sprite):
   def __init__(self, pos, surf = pygame.Surface((TILE_SIZE, TILE_SIZE)), groups = None, z = Z_LAYERS['main']):
     super().__init__(groups)
     self.image = surf
-    self.rect = self.image.get_frect(topleft = pos)
+    self.rect = self.image.get_rect(topleft = pos)
     self.old_rect = self.rect.copy()
     self.z = z 
     
@@ -148,7 +148,7 @@ class Node(pygame.sprite.Sprite):
   def __init__(self, pos, surf, groups, level, data, paths):
     super().__init__(groups)
     self.image = surf
-    self.rect = self.image.get_frect(center = (pos[0] + TILE_SIZE / 2, pos[1] + TILE_SIZE / 2))
+    self.rect = self.image.get_rect(center = (pos[0] + TILE_SIZE / 2, pos[1] + TILE_SIZE / 2))
     self.z = Z_LAYERS['path']
     self.level = level
     self.data = data
@@ -174,7 +174,7 @@ class Icon(pygame.sprite.Sprite):
     self.z = Z_LAYERS['main']
 
     # rect
-    self.rect = self.image.get_frect(center = pos)
+    self.rect = self.image.get_rect(center = pos)
     
   def start_move(self, path):
     self.rect.center = path[0]
