@@ -11,6 +11,7 @@ from menu import MainMenu
 from options import OptionsMenu
 from credits import CreditsMenu
 from win import CongratulationsScreen
+from game_over import GameOverScreen
 from button import Button
 
 class Game:
@@ -30,6 +31,7 @@ class Game:
     self.options_menu = OptionsMenu(self.display_surface, self.font, self.back_to_main_menu)
     self.credits_menu = CreditsMenu(self.display_surface, self.font, self.back_to_main_menu)
     self.congratulations_screen = CongratulationsScreen(self.display_surface, self.font, self.back_to_main_menu)
+    self.game_over_screen = GameOverScreen(self.display_surface, self.font, self.restart_game, self.back_to_main_menu)
     
     self.ui = UI(self.font, self.ui_frames)
     self.data = Data(self.ui)
@@ -66,7 +68,14 @@ class Game:
 
   def back_to_main_menu(self):
         self.state = "main_menu"
+        self.paused = False
         self.main_menu.reset()  # Reset menu to initial state
+
+  def restart_game(self):
+        self.data.reset()
+        self.current_stage = Overworld(self.tmx_overworld, self.data, self.overworld_frames, self.switch_stage)
+        self.state = "gameplay"
+        self.paused = False
 
   def quit_game(self):
         self.running = False
@@ -133,9 +142,8 @@ class Game:
     self.bg_music.set_volume(1)
    
   def check_game_over(self):
-     if self.data.health <= 0:
-       pygame.quit()
-       sys.exit()
+     if self.data.health <= 0 and self.state != "game_over":
+       self.state = "game_over"
        
   def resume_game(self):
     self.paused = False
@@ -144,10 +152,9 @@ class Game:
     self.paused = True
     
   def run(self):
-    while self.running: 
-      # get game running at same speed in any device
-      dt = self.clock.tick() / 1000
-      
+    while self.running:
+      dt = self.clock.tick(60) / 1000
+
       for event in pygame.event.get():
         if event.type == pygame.QUIT:
           self.running = False
@@ -155,13 +162,24 @@ class Game:
           if event.key == pygame.K_p:
             self.paused = not self.paused
 
+        if self.state == "main_menu":
+          self.main_menu.update(event)
+        elif self.state == "gameplay" and self.paused:
+          for button in self.pause_menu_buttons:
+            button.handle_event(event)
+        elif self.state == "options":
+          self.options_menu.update(event)
+        elif self.state == "credits":
+          self.credits_menu.update(event)
+        elif self.state == "congratulations":
+          self.congratulations_screen.update(event)
+        elif self.state == "game_over":
+          self.game_over_screen.update(event)
+
       if self.state == "main_menu":
-        self.main_menu.update(event)
         self.main_menu.draw()
       elif self.state == "gameplay":
         if self.paused:
-          for button in self.pause_menu_buttons:
-            button.handle_event(event)
           self.display_surface.fill("black")
           for button in self.pause_menu_buttons:
             button.draw(self.display_surface)
@@ -169,19 +187,71 @@ class Game:
           self.current_stage.run(dt)
           self.ui.update(dt)
       elif self.state == "options":
-        self.options_menu.update(event)
         self.options_menu.draw()
       elif self.state == "credits":
-        self.credits_menu.update(event)
         self.credits_menu.draw()
       elif self.state == "congratulations":
-        self.congratulations_screen.update(event)
         self.congratulations_screen.draw()
-      
-      self.check_game_over()    
-      
+      elif self.state == "game_over":
+        self.game_over_screen.draw()
+
+      if self.state == "gameplay":
+        self.check_game_over()
+
       pygame.display.update()
 
+  def tick(self):
+    """Single frame — used by browser build."""
+    if not self.running:
+      return 0
+    dt = self.clock.tick(60) / 1000
+
+    for event in pygame.event.get():
+      if event.type == pygame.QUIT:
+        self.running = False
+      elif event.type == pygame.KEYDOWN and self.state == "gameplay":
+        if event.key == pygame.K_p:
+          self.paused = not self.paused
+
+      if self.state == "main_menu":
+        self.main_menu.update(event)
+      elif self.state == "gameplay" and self.paused:
+        for button in self.pause_menu_buttons:
+          button.handle_event(event)
+      elif self.state == "options":
+        self.options_menu.update(event)
+      elif self.state == "credits":
+        self.credits_menu.update(event)
+      elif self.state == "congratulations":
+        self.congratulations_screen.update(event)
+      elif self.state == "game_over":
+        self.game_over_screen.update(event)
+
+    if self.state == "main_menu":
+      self.main_menu.draw()
+    elif self.state == "gameplay":
+      if self.paused:
+        self.display_surface.fill("black")
+        for button in self.pause_menu_buttons:
+          button.draw(self.display_surface)
+      else:
+        self.current_stage.run(dt)
+        self.ui.update(dt)
+    elif self.state == "options":
+      self.options_menu.draw()
+    elif self.state == "credits":
+      self.credits_menu.draw()
+    elif self.state == "congratulations":
+      self.congratulations_screen.draw()
+    elif self.state == "game_over":
+      self.game_over_screen.draw()
+
+    if self.state == "gameplay":
+      self.check_game_over()
+
+    pygame.display.update()
+    return dt
+
 if __name__ == '__main__':
-	game = Game()
-	game.run()
+  game = Game()
+  game.run()

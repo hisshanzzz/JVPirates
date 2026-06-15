@@ -165,7 +165,7 @@ class Icon(pygame.sprite.Sprite):
     self.icon = True
     self.path = None
     self.direction = vector()
-    self.speed = 400
+    self.speed = 600
     
     # image
     self.frames, self.frame_index = frames, 0

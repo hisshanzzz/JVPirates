@@ -34,6 +34,7 @@ class Level:
     self.semi_collision_sprites = pygame.sprite.Group()
     self.damage_sprites = pygame.sprite.Group()
     self.tooth_sprites = pygame.sprite.Group()
+    self.shell_sprites = pygame.sprite.Group()
     self.perl_sprites = pygame.sprite.Group()
     self.item_sprites = pygame.sprite.Group()
     
@@ -167,7 +168,7 @@ class Level:
         Shell(
           pos = (obj.x, obj.y), 
           frames = level_frames['shell'], 
-          groups = (self.all_sprites, self.collision_sprites), 
+          groups = (self.all_sprites, self.collision_sprites, self.shell_sprites), 
           reverse = obj.properties['reverse'], 
           player = self.player, 
           create_perl = self.create_perl)
@@ -209,19 +210,42 @@ class Level:
           ParticleEfffectSprite((sprite.rect.center), self.particle_frames, self.all_sprites)
   
   def item_collision(self):
-    if self.item_sprites:
-      item_sprites = pygame.sprite.spritecollide(self.player, self.item_sprites, True)
-      if item_sprites:
-        item_sprites[0].activate()
-        ParticleEfffectSprite((item_sprites[0].rect.center), self.particle_frames, self.all_sprites)
+    if not self.item_sprites:
+      return
+
+    # Use hitbox + last position so fast movement doesn't skip pickups
+    collect_rect = self.player.hitbox_rect.union(self.player.old_rect).inflate(50, 40)
+
+    for item in list(self.item_sprites):
+      if item.rect.colliderect(collect_rect):
+        item.activate()
+        ParticleEfffectSprite((item.rect.center), self.particle_frames, self.all_sprites)
+        item.kill()
         self.coin_sound.play()
   
   def attack_collision(self):
-    for target in self.perl_sprites.sprites() + self.tooth_sprites.sprites():
-      facing_target = self.player.rect.centerx < target.rect.centerx and self.player.facing_right or\
-                      self.player.rect.centerx > target.rect.centerx and not self.player.facing_right
-      if target.rect.colliderect(self.player.rect) and self.player.attacking and facing_target:
-        target.reverse()
+    if not self.player.attacking:
+      return
+
+    attack_rect = self.player.rect.copy()
+    reach = 90
+    if self.player.facing_right:
+      attack_rect.width += reach
+    else:
+      attack_rect.x -= reach
+      attack_rect.width += reach
+    attack_rect = attack_rect.inflate(10, 30)
+
+    targets = (
+      self.tooth_sprites.sprites() +
+      self.shell_sprites.sprites() +
+      self.perl_sprites.sprites()
+    )
+    for target in targets:
+      if attack_rect.colliderect(target.rect):
+        ParticleEfffectSprite((target.rect.center), self.particle_frames, self.all_sprites)
+        target.kill()
+        self.coin_sound.play()
   
   # making player camera movement(level display) constraints
   def check_constraints(self):
@@ -244,9 +268,9 @@ class Level:
     
     self.all_sprites.update(dt)
     self.perl_collision()
+    self.attack_collision()
     self.hit_collision()
     self.item_collision()
-    self.attack_collision()
     self.check_constraints()
     
     self.all_sprites.draw(self.player.hitbox_rect.center, dt)

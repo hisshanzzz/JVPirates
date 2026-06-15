@@ -1,0 +1,41 @@
+JV Pirates — LinkedIn post #3 (bugs fixed + play in browser)
+Use 3–4 days after your last JV Pirates post.
+
+Attach: gameplay screenshot OR short screen recording of you playing in Chrome
+Best time: Tue–Thu, 8–10 AM Sri Lanka time
+
+---
+
+Shipping is not the finish line — debugging is.
+
+After posting about The Tales of JV Pirates (our CraftQuest / Pygame team game), we hit real bugs in playtesting. Instead of hiding them, we fixed them and pushed an update to GitHub.
+
+What was broken:
+- Arrow keys — right movement felt dead (touch-control code was interfering with keyboard on desktop)
+- Combat — pressing X near enemies did nothing (attacks only reversed some enemies; shells were not hittable)
+- Pickups — walking through coins and potions did not collect them (hitbox vs sprite mismatch + fast movement skipping items)
+- Game over — running out of hearts closed the app with no restart option
+
+What we fixed:
+- Restored clean keyboard controls for laptop/desktop play
+- X now kills Tooth enemies, Shells, and pearl shots (saws/spikes are still hazards — dodge them)
+- Coins, potions, diamonds, and skulls collect reliably again
+- Game Over screen with Try Again + Back to Main Menu
+- Browser build for laptop play (keyboard only — Chrome recommended)
+
+Play it:
+- GitHub (code + download): https://github.com/hisshanzzz/JVPirates
+- Browser game (laptop): upload steps in repo — itch.io or GitHub Pages (see WEBSITE-DEPLOY.md)
+
+Built with Python + Pygame during CraftQuest at American Center Colombo.
+
+Team Typhoons:
+Shenali Madurapperuma · Sahan Jayamal · Thiyagarajah Madusheshan · Pasan Wanigasuriya · Mohamed Jaufer Mohamed Hisshan
+
+Thanks again to Liyanage Kalana Perera sir, Janitha Alendra Arachchige sir, and American Center Colombo / AJAX.
+
+Real games break. Real devs debug. Proud we kept going.
+
+#CraftQuest #GameDevelopment #Pygame #Python #Debugging #StudentDeveloper #TeamTyphoons #AmericanCenterColombo #IndieGame #BuildInPublic
+
+Tag (pick 2 max): Shenali Madurapperuma, Sahan Jayamal, Thiyagarajah Madusheshan, Pasan Wanigasuriya

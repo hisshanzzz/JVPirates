@@ -124,6 +124,7 @@ class Overworld:
             level = key) 
   
   def input(self):
+    pygame.event.pump()
     keys = pygame.key.get_pressed()
     if self.current_node and not self.icon.path:
       if keys[pygame.K_DOWN] and self.current_node.can_move('down'):

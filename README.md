@@ -43,13 +43,46 @@ py -3.12 -m pip install -r requirements.txt
 py -3.12 code/main.py
 ```
 
+Or double-click **`PLAY.bat`** on Windows.
+
+## Play in browser (itch.io / web)
+
+The game can run in Chrome via **pygbag** (WebAssembly).
+
+**Rebuild the itch.io upload:**
+
+```powershell
+py -3.12 -m pip install -r requirements-web.txt
+py -3.12 -m pygbag --build --archive --disable-sound-format-error --title "The Tales of JV Pirates" --package com.hisshanzzz.jvpirates --icon favicon.png main.py
+```
+
+Upload `build/web.zip` to itch.io — see **ITCHIO-UPLOAD.md** for step-by-step instructions.
+
+**Browser controls:** keyboard on desktop; on-screen touch buttons on phone/tablet.
+
 ## Controls
 
 | Key | Action |
 |---|---|
 | Arrow keys | Move |
-| Space | Attack |
+| Space | Jump |
+| X | Attack (deflect enemies) |
+| Enter | Enter level / confirm |
 | P | Pause |
+
+## Combat
+
+Press **X** (or the **ATK** touch button in the browser) while facing an enemy to deflect it. Attacks do not destroy most hazards.
+
+| Enemy / hazard | Attackable? | Effect when hit |
+|---|---|---|
+| **Tooth** (walking enemy) | Yes | Reverses direction |
+| **Perl** (shell projectile) | Yes | Deflected back |
+| **Shell** (shooter) | No | Shoots perls; attack the projectiles |
+| **Saw** (moving / static) | No | Avoid only |
+| **Floor spike** | No | Avoid only |
+| **Spike ball** (orbiting) | No | Avoid only |
+| **Moving hazards** (non-platform) | No | Avoid only |
 
 ## What we learned
 

@@ -22,7 +22,7 @@ class Player(pygame.sprite.Sprite):
     
     # movement
     self.direction = vector()
-    self.speed = 200
+    self.speed = 300
     self.gravity = 400
     self.jump = False
     self.jump_height = 650
@@ -40,14 +40,17 @@ class Player(pygame.sprite.Sprite):
       'wall_slide_block': Timer(250),
       'platform_skip': Timer(100),
       'attack_block': Timer(500),
+      'attack_active': Timer(500),
       'hit': Timer(400)
     }
     
     # audio
     self.attack_sound = attack_sound
     self.jump_sound = jump_sound
+    self.prev_x_down = False
     
   def input(self):
+    pygame.event.pump()
     keys = pygame.key.get_pressed()
     input_vector = vector(0,0)
     if not self.timers['wall_jump'].active:
@@ -63,10 +66,12 @@ class Player(pygame.sprite.Sprite):
       if keys[pygame.K_DOWN]:
         self.timers['platform_skip'].activate()
         
-      if keys[pygame.K_x]:
+      x_down = keys[pygame.K_x]
+      if x_down and not self.prev_x_down:
         self.attack()
+      self.prev_x_down = x_down
         
-      self.direction.x = input_vector.normalize().x if input_vector else input_vector.x
+      self.direction.x = input_vector.x
     
     if keys[pygame.K_SPACE]:
       self.jump = True
@@ -76,6 +81,7 @@ class Player(pygame.sprite.Sprite):
       self.attacking = True
       self.frame_index = 0
       self.timers['attack_block'].activate()
+      self.timers['attack_active'].activate()
       self.attack_sound.play()
     
   def move(self, dt):
@@ -173,8 +179,8 @@ class Player(pygame.sprite.Sprite):
       self.state = 'idle'
     self.image = self.frames[self.state][int(self.frame_index % len(self.frames[self.state]))]
     self.image = self.image if self.facing_right else pygame.transform.flip(self.image, True, False)
-    
-    if self.attacking and self.frame_index >= len(self.frames[self.state]):
+
+    if self.attacking and not self.timers['attack_active'].active:
       self.attacking = False
     
   def get_state(self):

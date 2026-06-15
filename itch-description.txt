@@ -1,0 +1,32 @@
+The Tales of JV Pirates
+
+A pirate-themed 2D adventure game built with Python and Pygame during CraftQuest at American Center Colombo (AJAX program).
+
+Team Typhoons shipped this as our first team game — level design, combat, overworld map, and a full game loop under a real deadline.
+
+HOW TO PLAY
+
+Browser: click "Run game" above. Works best in Chrome on desktop. On phone, use the on-screen touch buttons.
+
+Windows download: unzip, double-click PLAY.bat (needs Python 3.12 installed).
+
+CONTROLS
+
+Arrow keys — move
+Space — jump
+X — attack
+Enter — enter level / confirm
+P — pause
+
+On mobile browser: use the on-screen D-pad and buttons.
+
+CREDITS
+
+Team Typhoons:
+Mohamed Jaufer Mohamed Hisshan · Shenali Madurapperuma · Sahan Jayamal · Thiyagarajah Madusheshan · Pasan Wanigasuriya
+
+Mentor: Liyanage Kalana Perera
+Coordinator: Janitha Alendra Arachchige
+American Center Colombo / AJAX
+
+Code: https://github.com/hisshanzzz/JVPirates
